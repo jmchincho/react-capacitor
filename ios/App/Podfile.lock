@@ -1,0 +1,40 @@
+PODS:
+  - Capacitor (6.1.0):
+    - CapacitorCordova
+  - CapacitorCordova (6.1.0)
+  - CapacitorDialog (6.0.0):
+    - Capacitor
+  - CapacitorLocalNotifications (6.0.0):
+    - Capacitor
+  - CapacitorToast (6.0.1):
+    - Capacitor
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorDialog (from `../../node_modules/@capacitor/dialog`)"
+  - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
+  - "CapacitorToast (from `../../node_modules/@capacitor/toast`)"
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorDialog:
+    :path: "../../node_modules/@capacitor/dialog"
+  CapacitorLocalNotifications:
+    :path: "../../node_modules/@capacitor/local-notifications"
+  CapacitorToast:
+    :path: "../../node_modules/@capacitor/toast"
+
+SPEC CHECKSUMS:
+  Capacitor: 187bd7847b6f71467015a20200a1a071be3e5f14
+  CapacitorCordova: be703980ca797f847c3356f78fa175d21c8330c2
+  CapacitorDialog: 64aa82840ee5e9c066f9e1a49c1e186afd3f24d2
+  CapacitorLocalNotifications: 4ab68f0be5f697a579558fadd307d823a9ec1c26
+  CapacitorToast: d4c42ea810e223bdd66b95a7c661f5467666896d
+
+PODFILE CHECKSUM: 14adbe4065fa0c0cae8068dfb65c1d8988cea750
+
+COCOAPODS: 1.15.2
