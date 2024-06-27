@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">poc-capacitor-app-react</string>
-    <string name="title_activity_main">poc-capacitor-app-react</string>
-    <string name="package_name">es.oppenheimer.app</string>
-    <string name="custom_url_scheme">es.oppenheimer.app</string>
-</resources>
