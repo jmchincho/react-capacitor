@@ -23,7 +23,8 @@ workflows:
             #!/usr/bin/env sh
             set -e # exit on first failed command
             
-            echo $ANDROID_FIREBASE_SECRET > $CM_BUILD_DIR/android/app/google-services.json
+            echo $GOOGLE_APPLICATION_CREDENTIALS > $CM_BUILD_DIR/service-account.json
+            export GOOGLE_APPLICATION_CREDENTIALS=$CM_BUILD_DIR/service-account.json
         - name: Distribute to Firebase App Distribution
           script: |
             # Instalar Firebase CLI
