@@ -5,10 +5,10 @@ workflows:
       - name: Install dependencies
         script: |
           npm install
-          npx cap sync android
       - name: Build Typescript
         script: |
           npm run build
+          npx cap sync android
       - name: Build Android
         script: |
           cd android
