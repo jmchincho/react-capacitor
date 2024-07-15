@@ -1,9 +1,6 @@
 workflows:
   android-workflow:
     name: Android Workflow
-    environment:
-      vars:
-        GOOGLE_APPLICATION_CREDENTIALS: Encrypted(service_account_json)  # Reemplaza "service_account_json" con el JSON encriptado
     scripts:
       - name: Install dependencies
         script: |
