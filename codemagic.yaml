@@ -18,20 +18,13 @@ workflows:
       - android/app/build/outputs/**/*.apk
     publishing:
       scripts:
-        - name: Load Firebase configuration
-          script: |
-            #!/usr/bin/env sh
-            set -e # exit on first failed command
-            
-            echo $GOOGLE_APPLICATION_CREDENTIALS > $CM_BUILD_DIR/service-account.json
-            export GOOGLE_APPLICATION_CREDENTIALS=$CM_BUILD_DIR/service-account.json
         - name: Distribute to Firebase App Distribution
           script: |
             # Instalar Firebase CLI
             curl -sL https://firebase.tools | bash
             # Configurar las credenciales de la cuenta de servicio
-            echo $GOOGLE_APPLICATION_CREDENTIALS > service-account.json
-            export GOOGLE_APPLICATION_CREDENTIALS=service-account.json
+            echo $GOOGLE_APPLICATION_CREDENTIALS > $CM_BUILD_DIR/service-account.json
+            export GOOGLE_APPLICATION_CREDENTIALS=$CM_BUILD_DIR/service-account.json
             # Distribuir la app a Firebase App Distribution
             firebase appdistribution:distribute android/app/build/outputs/apk/release/app-release.apk \
               --app "1:761973486485:android:98f9b993fb008ebea07c9c" \
