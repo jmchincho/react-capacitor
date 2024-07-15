@@ -20,29 +20,44 @@ workflows:
     artifacts:
       - android/app/build/outputs/**/*.apk
     publishing:
-      scripts:
-        - name: Load Firebase configuration
-          script: |
-            #!/usr/bin/env sh
-            set -e # exit on first failed command
+      firebase:
+        # use this line to authenticate via service account
+        firebase_service_account: $GOOGLE_APPLICATION_CREDENTIALS
 
-            echo $GOOGLE_APPLICATION_CREDENTIALS > $CM_BUILD_DIR/service-account.json
-            export GOOGLE_APPLICATION_CREDENTIALS=$CM_BUILD_DIR/service-account.json
-        - name: Debugging Step
-          script: |
-            # Imprimir la ruta del archivo de credenciales
-            echo "Service Account JSON path: $CM_BUILD_DIR/service-account.json"
-            # Imprimir el contenido del archivo de credenciales (puedes quitar esto después de la depuración)
-            cat $CM_BUILD_DIR/service-account.json
-            # Verificar que la variable de entorno está configurada
-            echo "GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS"
-        - name: Distribute to Firebase App Distribution
-          script: |
-            # Instalar Firebase CLI
-            curl -sL https://firebase.tools | bash
-            # Distribuir la app a Firebase App Distribution
-            firebase appdistribution:distribute android/app/build/outputs/apk/release/app-release.apk \
-              --app "1:761973486485:android:98f9b993fb008ebea07c9c" \
-              --testers "josemanuel.chincho@codelorian.com" \
-              --groups "testers" \
-              --release-notes "Nueva versión de prueba para entorno de pruebas"
+        # or this line to authenticate via token:
+        # firebase_token: $FIREBASE_TOKEN
+
+        android:
+          # Add your Android app id retrieved from Firebase console
+          app_id: 1:761973486485:android:98f9b993fb008ebea07c9c
+
+          # Add one or more groups that you wish to distribute your Android application to.
+          # You can create groups in the Firebase console
+          groups:
+            - test
+#      scripts:
+#        - name: Load Firebase configuration
+#          script: |
+#            #!/usr/bin/env sh
+#            set -e # exit on first failed command
+#
+#            echo $GOOGLE_APPLICATION_CREDENTIALS > $CM_BUILD_DIR/service-account.json
+#            export GOOGLE_APPLICATION_CREDENTIALS=$CM_BUILD_DIR/service-account.json
+#        - name: Debugging Step
+#          script: |
+#            # Imprimir la ruta del archivo de credenciales
+#            echo "Service Account JSON path: $CM_BUILD_DIR/service-account.json"
+#            # Imprimir el contenido del archivo de credenciales (puedes quitar esto después de la depuración)
+#            cat $CM_BUILD_DIR/service-account.json
+#            # Verificar que la variable de entorno está configurada
+#            echo "GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS"
+#        - name: Distribute to Firebase App Distribution
+#          script: |
+#            # Instalar Firebase CLI
+#            curl -sL https://firebase.tools | bash
+#            # Distribuir la app a Firebase App Distribution
+#            firebase appdistribution:distribute android/app/build/outputs/apk/release/app-release.apk \
+#              --app "1:761973486485:android:98f9b993fb008ebea07c9c" \
+#              --testers "josemanuel.chincho@codelorian.com" \
+#              --groups "testers" \
+#              --release-notes "Nueva versión de prueba para entorno de pruebas"
