@@ -1,7 +1,7 @@
 import type {CapacitorConfig} from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'es.oppenheimer.app',
+    appId: 'es.test.jmchincho',
     appName: 'poc-capacitor-app-react',
     webDir: 'dist',
     "plugins": {
