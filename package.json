@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "dev:ios": "npm run build && npx cap copy && npx cap run ios",
-    "dev:android": "npx cap run android"
+    "dev:android": "npm run build && npx cap sync android && npx cap run android"
   },
   "dependencies": {
     "@capacitor/android": "^6.1.0",
