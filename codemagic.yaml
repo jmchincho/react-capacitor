@@ -6,6 +6,9 @@ workflows:
         script: |
           npm install
           npx cap sync android
+      - name: Build Typescript
+        script: |
+          npm run build
       - name: Build Android
         script: |
           cd android
