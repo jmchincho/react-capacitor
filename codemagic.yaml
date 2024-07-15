@@ -1,5 +1,8 @@
 workflows:
   android-workflow:
+    environment:
+      groups:
+        - firebase
     name: Android Workflow
     scripts:
       - name: Install dependencies
