@@ -33,8 +33,6 @@ workflows:
     artifacts:
       - android/app/build/outputs/**/*.apk
     publishing:
-      artifact_paths:
-        - android/app/build/outputs/apk/release/app-release-signed.apk
       firebase:
         # use this line to authenticate via service account
         firebase_service_account: $GOOGLE_APPLICATION_CREDENTIALS
