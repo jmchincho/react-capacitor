@@ -29,9 +29,12 @@ workflows:
       - name: Align APK
         script: |
           zipalign -v 4 android/app/build/outputs/apk/release/app-release-unsigned.apk android/app/build/outputs/apk/release/app-release-signed.apk
+          rm -rf android/app/build/outputs/apk/release/app-release-unsigned.apk
     artifacts:
       - android/app/build/outputs/**/*.apk
     publishing:
+      artifact_paths:
+        - android/app/build/outputs/apk/release/app-release-signed.apk
       firebase:
         # use this line to authenticate via service account
         firebase_service_account: $GOOGLE_APPLICATION_CREDENTIALS
@@ -42,7 +45,7 @@ workflows:
         android:
           # Add your Android app id retrieved from Firebase console
           app_id: 1:761973486485:android:98f9b993fb008ebea07c9c
-
+          a
           # Add one or more groups that you wish to distribute your Android application to.
           # You can create groups in the Firebase console
           groups:
