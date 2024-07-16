@@ -3,6 +3,7 @@ workflows:
     environment:
       groups:
         - firebase
+        - keystore_credentials
     name: Android Workflow
     scripts:
       - name: Install dependencies
