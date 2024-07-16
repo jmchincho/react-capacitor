@@ -43,7 +43,6 @@ workflows:
         android:
           # Add your Android app id retrieved from Firebase console
           app_id: 1:761973486485:android:98f9b993fb008ebea07c9c
-          a
           # Add one or more groups that you wish to distribute your Android application to.
           # You can create groups in the Firebase console
           groups:
