@@ -14,8 +14,8 @@ workflows:
           npx cap sync android
       - name: Get Git commit hash
         script: |
-          export GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
-          echo "GIT_COMMIT_HASH=${GIT_COMMIT_HASH}" >> $BASH_ENV
+          GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
+          echo "export GIT_COMMIT_HASH=${GIT_COMMIT_HASH}" >> $BASH_ENV
       - name: Decode keystore
         script: |
           echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.jks
