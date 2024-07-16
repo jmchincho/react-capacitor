@@ -13,9 +13,6 @@ workflows:
         script: |
           npm run build
           npx cap sync android
-      - name: Get Git commit hash
-        script: |
-          echo $(git rev-parse --short HEAD) >> $CM_VERSION_HASH
       - name: Decode keystore
         script: |
           echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
