@@ -45,10 +45,10 @@ workflows:
     integrations:
       app_store_connect: app_store_credentials
     environment:
-      groups:
-        - app_store_credentials
-        - provisioning_profiles
-        - certificate_credentials
+#      groups:
+#        - app_store_credentials
+#        - provisioning_profiles
+#        - certificate_credentials
       vars:
         XCODE_WORKSPACE: "ios/App.xcworkspace"
         XCODE_SCHEME: "App"
