@@ -45,7 +45,9 @@ workflows:
     integrations:
       app_store_connect: app_store_credentials
     environment:
-#      groups:
+      groups:
+        - development
+        -
 #        - app_store_credentials
 #        - provisioning_profiles
 #        - certificate_credentials
