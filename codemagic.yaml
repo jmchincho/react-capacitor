@@ -47,7 +47,6 @@ workflows:
     environment:
       groups:
         - development
-        -
 #        - app_store_credentials
 #        - provisioning_profiles
 #        - certificate_credentials
