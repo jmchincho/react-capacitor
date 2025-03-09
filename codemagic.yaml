@@ -76,7 +76,8 @@ workflows:
                      -scheme $XCODE_SCHEME \
                      -sdk iphoneos \
                      -configuration Release \
-                     -archivePath build/App.xcarchive archive
+                     -archivePath build/App.xcarchive archive \
+                      -allowProvisioningUpdates
       - name: Export IPA
         script: |
           xcodebuild -exportArchive \
