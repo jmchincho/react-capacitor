@@ -47,9 +47,9 @@ workflows:
     environment:
       ios_signing:
         provisioning_profiles:
-          - development
+          - distribution_profile
         certificates:
-          - development
+          - distribution_certificate
 #        - app_store_credentials
 #        - provisioning_profiles
 #        - certificate_credentials
