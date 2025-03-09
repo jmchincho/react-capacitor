@@ -62,7 +62,6 @@ workflows:
         script: |
           npm run build
           npx cap sync ios
-          cd ios && pod install && cd ..
       - name: Set up keychain and provisioning profiles
         script: |
           keychain initialize
