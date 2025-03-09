@@ -2,9 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <!-- Método de exportación para distribución en TestFlight/App Store -->
-  <key>method</key>
-  <string>app-store</string>
 
   <!-- Si usas firma manual, indica el Team ID -->
   <key>teamID</key>
@@ -13,6 +10,9 @@
   <!-- Estilo de firma manual -->
   <key>signingStyle</key>
   <string>manual</string>
+
+  <key>method</key>
+  <string>app-store-connect</string>
 
   <!-- Opciones de bitcode (comúnmente deshabilitadas en builds beta) -->
   <key>compileBitcode</key>
