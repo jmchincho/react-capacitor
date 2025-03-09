@@ -42,9 +42,10 @@ workflows:
             - test
 
   ios-workflow:
+    integrations:
+      app_store_connect: app_store_credentials
     environment:
       groups:
-        - firebase
         - app_store_credentials
         - provisioning_profiles
         - certificate_credentials
@@ -82,9 +83,10 @@ workflows:
     artifacts:
       - build/**/*.ipa
     publishing:
-      firebase:
-        firebase_service_account: $GOOGLE_APPLICATION_CREDENTIALS
-        ios:
-          app_id: 1:761973486485:ios:98f9b993fb008ebea07c9c
-          groups:
-            - test
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        expire_build_submitted_for_review: true
+        beta_groups:
+          - grupo_beta1
+          - grupo_beta2
