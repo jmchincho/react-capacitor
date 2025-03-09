@@ -69,6 +69,8 @@ workflows:
           xcode-project use-profiles
       - name: Build iOS App
         script: |
+          pwd
+          ls
           xcodebuild -workspace $XCODE_WORKSPACE \
                      -scheme $XCODE_SCHEME \
                      -sdk iphoneos \
