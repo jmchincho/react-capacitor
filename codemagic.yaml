@@ -50,6 +50,7 @@ workflows:
 #        - provisioning_profiles
 #        - certificate_credentials
       vars:
+        DEVELOPMENT_TEAM: "PV4A53A4T9"
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
         EXPORT_OPTIONS_PLIST: "ios/exportOptions.plist"
