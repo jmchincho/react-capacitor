@@ -43,7 +43,7 @@ workflows:
 
   ios-workflow:
     integrations:
-      app_store_connect: app_store_credentials
+      app_store_connect: app_store_credentials_poc
     environment:
       ios_signing:
         provisioning_profiles:
