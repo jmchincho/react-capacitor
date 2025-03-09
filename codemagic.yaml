@@ -43,7 +43,7 @@ workflows:
 
   ios-workflow:
     integrations:
-      app_store_connect: VZPD6YQ285
+      app_store_connect: es.test.jmchincho
     environment:
       ios_signing:
         provisioning_profiles:
