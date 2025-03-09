@@ -46,6 +46,8 @@ workflows:
       app_store_connect: es.test.jmchincho
     environment:
       ios_signing:
+        distribution_type: app_store # or: ad_hoc | development | enterprise
+        bundle_identifier: es.test.jmchincho
         provisioning_profiles:
           - distribution_profile
         certificates:
