@@ -48,9 +48,9 @@ workflows:
       ios_signing:
         distribution_type: app_store
         provisioning_profiles:
-          - distribution_profile
+          - poc_profile
         certificates:
-          - distribution_certificate
+          - poc_certificate
 #        - app_store_credentials
 #        - provisioning_profiles
 #        - certificate_credentials
