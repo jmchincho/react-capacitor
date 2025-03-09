@@ -14,8 +14,6 @@ def capacitor_pods
   pod 'CapacitorDialog', :path => '../../node_modules/@capacitor/dialog'
   pod 'CapacitorLocalNotifications', :path => '../../node_modules/@capacitor/local-notifications'
   pod 'CapacitorToast', :path => '../../node_modules/@capacitor/toast'
-  pod 'FirebaseAuth'
-  pod 'FirebaseFirestore'
 end
 
 target 'App' do
