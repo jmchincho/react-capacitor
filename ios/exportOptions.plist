@@ -1,48 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <!-- Tipo de exportación -->
+  <!-- Método de exportación para distribución en TestFlight/App Store -->
   <key>method</key>
-  <string>ad-hoc</string>
+  <string>app-store</string>
 
-  <!-- Asegúrate de que tu provisioning profile sea para Ad Hoc
-       y que incluya todos los dispositivos que probarán la app -->
-  <key>provisioningProfiles</key>
-  <dict>
-    <!-- La clave debe ser tu Bundle ID tal cual está en Xcode -->
-    <key>poc-capacitor-app-react</key>
-    <!-- Pon aquí el nombre exacto de tu provisioning profile
-         (como aparece en Apple Developer) -->
-    <string>NombreDeTuProvisioningProfileAdHoc</string>
-  </dict>
-
-  <!-- Tu Team ID de Apple Developer -->
+  <!-- Si usas firma manual, indica el Team ID -->
   <key>teamID</key>
-  <string>TU_TEAM_ID</string>
+  <string>PV4A53A4T9</string>
 
-  <!-- Estilo de firma manual (ya que estás especificando el profile) -->
+  <!-- Estilo de firma manual -->
   <key>signingStyle</key>
   <string>manual</string>
 
-  <!-- Si deseas incluir o no bitcode. Muchas veces se desactiva en Ad Hoc -->
+  <!-- Opciones de bitcode (comúnmente deshabilitadas en builds beta) -->
   <key>compileBitcode</key>
   <false/>
-
-  <!-- Para optimizar o no el stripping de símbolos Swift -->
   <key>stripSwiftSymbols</key>
   <true/>
-
-  <!-- Define si subes bitcode a Apple (para Ad Hoc usualmente es false) -->
   <key>uploadBitcode</key>
   <false/>
 
-  <!-- Si no tienes iCloud, puedes omitir esto. De lo contrario,
-       asegúrate de que coincida con tu configuración. -->
-  <!--
-  <key>iCloudContainerEnvironment</key>
-  <string>Production</string>
+  <!-- Si requieres usar un provisioning profile específico, agrégalo así:
+  <key>provisioningProfiles</key>
+  <dict>
+    <key>com.tuempresa.tuapp</key>
+    <string>NombreDeTuProvisioningProfileAppStore</string>
+  </dict>
   -->
 </dict>
 </plist>
