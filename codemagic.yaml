@@ -43,7 +43,7 @@ workflows:
 
   ios-workflow:
     integrations:
-      app_store_connect: app_store_credentials_poc
+      app_store_connect: VZPD6YQ285
     environment:
       ios_signing:
         provisioning_profiles:
@@ -87,7 +87,8 @@ workflows:
           xcodebuild -exportArchive \
                      -archivePath build/App.xcarchive \
                      -exportOptionsPlist $EXPORT_OPTIONS_PLIST \
-                     -exportPath build/
+                     -exportPath build/ \
+                     -allowProvisioningUpdates
     artifacts:
       - build/**/*.ipa
     publishing:
