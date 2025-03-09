@@ -25,8 +25,8 @@
   <!-- Si requieres usar un provisioning profile específico, agrégalo así:
   <key>provisioningProfiles</key>
   <dict>
-    <key>com.tuempresa.tuapp</key>
-    <string>NombreDeTuProvisioningProfileAppStore</string>
+    <key>es.test.jmchincho</key>
+    <string>es.test.jmchincho</string>
   </dict>
   -->
 </dict>
