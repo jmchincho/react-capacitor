@@ -46,7 +46,6 @@ workflows:
       app_store_connect: es.test.jmchincho
     environment:
       ios_signing:
-        distribution_type: app_store
         provisioning_profiles:
           - poc_profile
         certificates:
@@ -70,7 +69,6 @@ workflows:
           npx cap sync ios
       - name: Set up keychain and provisioning profiles
         script: |
-          keychain initialize
           xcode-project use-profiles
       - name: Build iOS App
         script: |
