@@ -16,6 +16,19 @@ workflows:
       - name: Decode keystore
         script: |
           echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
+
+      - name: Setting the version
+        script: |
+          version=$(node -p "require('./package.json').version")
+
+          commit_hash=$(git rev-parse --short HEAD)
+
+          new_version="${version}.${commit_hash}"
+
+          echo "La nueva versión es: $new_version"
+          
+          sed -i '' "s/versionName \".*\"/versionName \"$new_version\"/" android/app/build.gradle
+
       - name: Build Android
         script: |
           cd android
@@ -67,13 +80,23 @@ workflows:
         script: |
           npm run build
           npx cap sync ios
+      - name: Setting the version
+        script: |
+          version=$(node -p "require('./package.json').version")
+
+          commit_hash=$(git rev-parse --short HEAD)
+
+          new_version="${version}.${commit_hash}"
+
+          echo "La nueva versión es: $new_version"
+          
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $new_version" ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $new_version" ios/App/App/Info.plist
       - name: Set up keychain and provisioning profiles
         script: |
           xcode-project use-profiles
       - name: Build iOS App
         script: |
-          pwd
-          ls ios
           xcodebuild -workspace $XCODE_WORKSPACE \
                      -scheme $XCODE_SCHEME \
                      -sdk iphoneos \
