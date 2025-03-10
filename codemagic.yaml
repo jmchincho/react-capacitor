@@ -90,10 +90,16 @@ workflows:
     artifacts:
       - build/**/*.ipa
     publishing:
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: true
-        expire_build_submitted_for_review: true
-        beta_groups:
-          - grupo_beta1
-          - grupo_beta2
+      firebase:
+        firebase_service_account: $GOOGLE_APPLICATION_CREDENTIALS
+        android:
+          app_id: 1:761973486485:ios:b57072a1684b2613a07c9c
+          groups:
+            - test
+#      app_store_connect:
+#        auth: integration
+#        submit_to_testflight: true
+#        expire_build_submitted_for_review: true
+#        beta_groups:
+#          - grupo_beta1
+#          - grupo_beta2
