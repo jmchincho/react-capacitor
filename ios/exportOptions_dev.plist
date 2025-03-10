@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <!-- Si usas firma manual, indica el Team ID -->
+  <key>teamID</key>
+  <string>PV4A53A4T9</string>
+
+  <!-- Estilo de firma manual -->
+  <key>signingStyle</key>
+  <string>manual</string>
+
+  <key>method</key>
+  <string>ad-hoc</string>
+
+  <!-- Opciones de bitcode (comúnmente deshabilitadas en builds beta) -->
+  <key>compileBitcode</key>
+  <false/>
+  <key>stripSwiftSymbols</key>
+  <true/>
+  <key>uploadBitcode</key>
+  <false/>
+
+  <key>signingCertificate</key>
+  <string>Apple Distribution</string>
+
+  <!-- Si requieres usar un provisioning profile específico, agrégalo así:
+  -->
+  <key>provisioningProfiles</key>
+  <dict>
+      <key>es.test.jmchincho.extension</key>
+      <string>efcb44d3-f14b-44bc-913b-4bd6fce5316d</string>
+  </dict>
+</dict>
+</plist>
