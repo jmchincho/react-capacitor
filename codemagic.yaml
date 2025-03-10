@@ -91,7 +91,8 @@ workflows:
       - build/**/*.ipa
     publishing:
       firebase:
-        android:
+        firebase_service_account: $GOOGLE_APPLICATION_CREDENTIALS
+        ios:
           app_id: 1:761973486485:ios:b57072a1684b2613a07c9c
           groups:
             - test
