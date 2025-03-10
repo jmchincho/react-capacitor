@@ -26,11 +26,11 @@
   <string>Apple Distribution</string>
 
   <!-- Si requieres usar un provisioning profile específico, agrégalo así:
+  -->
   <key>provisioningProfiles</key>
   <dict>
-    <key>es.test.jmchincho</key>
-    <string>8746178e-fada-4f86-bff6-243d6b2067b7</string>
+      <key>es.test.jmchincho</key>
+      <string>8746178e-fada-4f86-bff6-243d6b2067b7</string>
   </dict>
-  -->
 </dict>
 </plist>
