@@ -12,7 +12,7 @@
   <string>manual</string>
 
   <key>method</key>
-  <string>ad-hoc</string>
+  <string>release-testing</string>
 
   <!-- Opciones de bitcode (comúnmente deshabilitadas en builds beta) -->
   <key>compileBitcode</key>
