@@ -10,46 +10,68 @@ declare global {
 
 export function useInAppPurchase() {
     useEffect(() => {
-        if (!window.CdvPurchase.store) {
-            console.warn('Store plugin not available');
-            return;
-        }
+        const initStore = async () => {
+            document.addEventListener('deviceready', async () => {
+                const store = window.CdvPurchase?.store;
 
-        const store = window.CdvPurchase.store;
+                if (!store) {
+                    console.warn('CdvPurchase store not available');
+                    return;
+                }
 
-        store.verbosity = store.DEBUG;
-        //
-        // store.initialize([{
-        //     platform: CdvPurchase.Platform.APPLE_APPSTORE
-        // }]);
+                console.log('📦 Iniciando CdvPurchase...');
+                store.verbosity = store.DEBUG;
 
+                try {
+                    // 🔐 (opcional) validador de recibos
+                    store.validator = 'https://validator.iaptic.com/v1/validate?appName=demo&apiKey=12345678';
 
+                    // ✅ Inicializar tienda
+                    await store.initialize([
+                        {
+                            platform: store.APPLE_APPSTORE,
+                            options: { needAppReceipt: true }
+                        }
+                    ]);
 
-        store.initialize();
+                    // ✅ Registrar productos
+                    store.register([
+                        {
+                            id: 'es.test.jmchincho.fitness.premium.1',
+                            type: store.PAID_SUBSCRIPTION,
+                            platform: store.APPLE_APPSTORE,
+                        }
+                    ]);
 
-        store.register({
-            id: 'es.test.jmchincho.fitness.premium.1', // el ID de tu producto en App Store Connect
-            type: store.PAID_SUBSCRIPTION,
-            platform:  store.APPLE_APPSTORE,
-        });
+                    // ✅ Listeners
+                    store.when()
+                        .productUpdated(() => {
+                            console.log('✅ Productos cargados:', store.products);
+                        })
+                        .approved((tx: any) => {
+                            console.log('🛒 Compra aprobada:', tx);
+                            tx.verify();
+                        })
+                        .verified((receipt: any) => {
+                            console.log('✅ Compra verificada:', receipt);
+                            receipt.finish();
+                        });
 
-        store.when('es.test.jmchincho.fitness.premium.1').approved((product: any) => {
-            console.log('[APPROVED]', product);
-            product.finish();
-        });
+                    store.ready(() => {
+                        console.log('✅ Productos cargados:', store.products);
+                        console.log('✅ Store READY');
+                    });
 
-        store.when('es.test.jmchincho.fitness.premium.1').updated((product: any) => {
-            console.log('[UPDATED]', product);
-        });
+                    store.error((err: any) => {
+                        console.error('[STORE ERROR]', err);
+                    });
 
-        store.error((err: any) => {
-            console.error('[STORE ERROR]', err);
-        });
+                } catch (error: any) {
+                    console.error('[STORE INITIALIZATION ERROR]', error?.message || error);
+                }
+            }, { once: true });
+        };
 
-        store.ready(() => {
-            console.log('[STORE READY]');
-        });
-
-
+        initStore();
     }, []);
 }
