@@ -150,6 +150,12 @@ workflows:
       - name: Set up keychain and provisioning profiles
         script: |
           xcode-project use-profiles
+      - name: Setting the version
+        script: |
+          echo "La nueva versión es: $BUILD_NUMBER"
+
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $BUILD_NUMBER" ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/App/App/Info.plist
       - name: Build iOS App
         script: |
           pwd
