@@ -1,20 +1,32 @@
-// src/App.tsx
-import { useInAppPurchase } from '../hook/useInAppPurchase';
+// src/components/InAppPurchase.tsx
+import {useInAppPurchase} from '../hook/useInAppPurchase';
+import Offer = CdvPurchase.Offer;
+import Platform = CdvPurchase.Platform;
 
 const InAppPurchase = () => {
     useInAppPurchase();
 
     const handleBuy = () => {
-        const store = (window as any).store;
-        store.order('es.test.jmchincho.fitness.premium.1');
+        const store = (window as any)?.CdvPurchase?.store;
+
+        if (!store) {
+            console.warn('Store not initialized yet');
+            return;
+        }
+
+        const product = store.get('es.test.jmchincho.fitness.premium.1');
+        console.log('dasdas' + product)
+        const offer = product?.getOffer();
+
+        store.order(offer);
     };
 
     return (
-        <div>
+        <div style={{ padding: '1rem' }}>
             <h1>Mi App con Suscripciones</h1>
             <button onClick={handleBuy}>Comprar Suscripción</button>
         </div>
     );
-}
+};
 
 export default InAppPurchase;

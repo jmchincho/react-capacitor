@@ -1,22 +1,36 @@
 // src/hooks/useInAppPurchase.ts
 import { useEffect } from 'react';
+import 'cordova-plugin-purchase';
 
-declare const window: any;
+declare global {
+    interface Window {
+        CdvPurchase?: any;
+    }
+}
 
 export function useInAppPurchase() {
     useEffect(() => {
-        if (!window.store) {
+        if (!window.CdvPurchase.store) {
             console.warn('Store plugin not available');
             return;
         }
 
-        const store = window.store;
+        const store = window.CdvPurchase.store;
 
         store.verbosity = store.DEBUG;
+        //
+        // store.initialize([{
+        //     platform: CdvPurchase.Platform.APPLE_APPSTORE
+        // }]);
+
+
+
+        store.initialize();
 
         store.register({
             id: 'es.test.jmchincho.fitness.premium.1', // el ID de tu producto en App Store Connect
             type: store.PAID_SUBSCRIPTION,
+            platform:  store.APPLE_APPSTORE,
         });
 
         store.when('es.test.jmchincho.fitness.premium.1').approved((product: any) => {
@@ -36,7 +50,6 @@ export function useInAppPurchase() {
             console.log('[STORE READY]');
         });
 
-        store.refresh();
 
     }, []);
 }
