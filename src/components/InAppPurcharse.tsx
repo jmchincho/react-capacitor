@@ -1,29 +1,20 @@
-import { useStoreProducts } from '../hook/useStoreProducts';
+// src/App.tsx
+import { useInAppPurchase } from '../hook/useInAppPurchase';
 
-const productDefs = [
-    { id: 'es.test.jmchincho.moneda.virtual.1', type: window.store?.CONSUMABLE },
-    { id: 'es.test.jmchincho.moneda.virtual.2', type: window.store?.CONSUMABLE },
-    { id: 'es.test.jmchincho.fitness.premium.1', type: window.store?.PAID_SUBSCRIPTION },
-    { id: 'es.test.jmchincho.fitness.premium.2', type: window.store?.PAID_SUBSCRIPTION },
-];
+const InAppPurchase = () => {
+    useInAppPurchase();
 
-export const InAppPurchase = () => {
-    const { products, isReady } = useStoreProducts(productDefs);
-
-    if (!isReady) return <p>Cargando productos...</p>;
+    const handleBuy = () => {
+        const store = (window as any).store;
+        store.order('es.test.jmchincho.fitness.premium.1');
+    };
 
     return (
         <div>
-            <h2>Productos disponibles</h2>
-            <ul>
-                {products.map((p) => (
-                    <li key={p.id}>
-                        <strong>{p.title}</strong> - {p.price}
-                        <p>{p.description}</p>
-                        <button onClick={() => window.store.order(p.id)}>Comprar</button>
-                    </li>
-                ))}
-            </ul>
+            <h1>Mi App con Suscripciones</h1>
+            <button onClick={handleBuy}>Comprar Suscripción</button>
         </div>
     );
-};
+}
+
+export default InAppPurchase;

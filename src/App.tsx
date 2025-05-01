@@ -5,18 +5,17 @@ import './App.css'
 //
 // import ToastComponent from "./components/Toast.tsx";
 // import ActionComponent from "./components/Action.tsx";
- import VideoPlayer from "./components/Video.tsx";
-import {InAppPurchase} from "./components/InAppPurcharse.tsx";
+import InAppPurchase from "./components/InAppPurcharse.tsx";
 
 function App() {
 
   return (
       <>
           <div className="App">
-              <header className="App-header">
-                  <h3>Vidstack con Capacitor</h3>
-                  <VideoPlayer/>
-              </header>
+              {/*<header className="App-header">*/}
+              {/*    <h3>Vidstack con Capacitor</h3>*/}
+              {/*    <VideoPlayer/>*/}
+              {/*</header>*/}
               {/*<header className="App-header">*/}
               {/*    <h3>Notificaciones Locales con Capacitor</h3>*/}
               {/*    <Notification/>*/}
@@ -34,8 +33,12 @@ function App() {
               {/*    <ActionComponent/>*/}
               {/*</header>*/}
 
+              <div>
+                  <button>Subcription</button>
+              </div>
+
               <header className="App-header">
-                  <h3>Vidstack con Capacitor</h3>
+                  <h3>InAppPurchase</h3>
                   <InAppPurchase />
               </header>
           </div>
