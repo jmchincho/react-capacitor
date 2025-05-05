@@ -1,6 +1,7 @@
 workflows:
   android-workflow:
     environment:
+      java: 21
       groups:
         - firebase
         - keystore_credentials
