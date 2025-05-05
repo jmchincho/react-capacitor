@@ -10,6 +10,8 @@ PODS:
     - Capacitor
   - CapacitorToast (7.0.1):
     - Capacitor
+  - CapacitorVideoPlayer (6.0.2):
+    - Capacitor
   - CordovaPlugins (7.2.0):
     - CapacitorCordova
 
@@ -20,6 +22,7 @@ DEPENDENCIES:
   - "CapacitorDialog (from `../../node_modules/@capacitor/dialog`)"
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
   - "CapacitorToast (from `../../node_modules/@capacitor/toast`)"
+  - CapacitorVideoPlayer (from `../../node_modules/capacitor-video-player`)
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
 
 EXTERNAL SOURCES:
@@ -35,6 +38,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/local-notifications"
   CapacitorToast:
     :path: "../../node_modules/@capacitor/toast"
+  CapacitorVideoPlayer:
+    :path: "../../node_modules/capacitor-video-player"
   CordovaPlugins:
     :path: "../capacitor-cordova-ios-plugins"
 
@@ -45,8 +50,9 @@ SPEC CHECKSUMS:
   CapacitorDialog: 0e09f242f6c3f5e82e4dc76b20f2a056be57a579
   CapacitorLocalNotifications: c2212755b33d2513b8bb325096ce3a64d4039ae3
   CapacitorToast: ddfc4b36080dbe3634c9faf510b20f6ddcff9330
+  CapacitorVideoPlayer: b10c7102c50bb5d5eba2653b5bd99109f5a1bf10
   CordovaPlugins: 1ca8577fbd90aa21fc0a1a4428d24e3aedc3499a
 
-PODFILE CHECKSUM: 49226d2217e241756b719e5857b9a28dadb6bfb5
+PODFILE CHECKSUM: 0a1354c7b0002cc42e169458e5848855488b7efc
 
 COCOAPODS: 1.16.2

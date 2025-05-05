@@ -1,7 +1,5 @@
 // src/components/InAppPurchase.tsx
 import {useInAppPurchase} from '../hook/useInAppPurchase';
-import Offer = CdvPurchase.Offer;
-import Platform = CdvPurchase.Platform;
 
 const InAppPurchase = () => {
     useInAppPurchase();

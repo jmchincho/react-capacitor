@@ -1,31 +1,64 @@
-import '@vidstack/react/player/styles/default/theme.css';
+import React, { useEffect, useRef, useState } from 'react';
+import { CapacitorVideoPlayer } from 'capacitor-video-player';
+import {Capacitor} from "@capacitor/core";
 
-import { MediaPlayer, MediaProvider, PlayButton, TimeSlider } from '@vidstack/react';
-import {PauseIcon, PlayIcon} from "@vidstack/react/icons";
+export interface VideoProps {
+    urlVideo: string;
+    urlPoster: string;
+    title: string;
+    posterAlt: string;
+    className?: string;
+    onPause?: (value: boolean) => void;
+}
 
-const VideoPlayer = () => {
+const Video: React.FC<VideoProps> = ({
+                                         urlVideo,
+                                         urlPoster,
+                                         title,
+                                         posterAlt,
+                                         className,
+                                         onPause
+                                     }) => {
+    const playerRef = useRef<HTMLDivElement>(null);
+    const [showPoster, setShowPoster] = useState(true);
+    const [isPaused, setIsPaused] = useState(true);
+    const videoPlayerId = 'fullscreen-player';
+
+    const initPlayer = async () => {
+        if (!playerRef.current) return;
+
+        await CapacitorVideoPlayer.initPlayer({
+            mode: 'fullscreen',
+            url: urlVideo,
+            playerId: videoPlayerId,
+            componentTag: 'video-player',
+            title,
+        });
+
+
+    };
+
+
     return (
-        <div>
-            {/*<MediaPlayer controls={true} muted={true}  title="Sprite Fight" src="https://s3.eu-central-2.wasabisys.com/codelorian-video/flexiones.mp4?AWSAccessKeyId=QGIXNEX2ME9OE0T1GP0W&Expires=1721944597&Signature=RgFEl6xqNAK5aAOH0XEAlQ%2FOO1Q%3D">*/}
-            {/*    <MediaProvider  />*/}
-            {/*</MediaPlayer>*/}
-            <MediaPlayer muted={true} controls={false} title="Sprite Fight" src="youtube/_ifxX0U-xrM">
-                <MediaProvider  />
-                <PlayButton className="vds-button">
-                    <PlayIcon className="play-icon vds-icon" />
-                    <PauseIcon className="pause-icon vds-icon" />
-                </PlayButton>
-                <TimeSlider.Root className="vsds-time-slider vds-slider">
-                    <TimeSlider.Track className="vds-slider-track" />
-                    <TimeSlider.TrackFill className="vds-slider-track-fill vds-slider-track" />
-                    <TimeSlider.Progress className="vds-slider-progress vds-slider-track" />
-                    <TimeSlider.Thumb className="vds-slider-thumb" />
-                </TimeSlider.Root>
-
-            </MediaPlayer>
-
+        <div className={`relative w-full h-full ${className}`} ref={playerRef}>
+            {showPoster && (
+                <div className="absolute inset-0 z-10 bg-black">
+                    <img
+                        src={urlPoster}
+                        alt={posterAlt}
+                        className="w-full h-full object-cover"
+                    />
+                    <button
+                        className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold bg-black bg-opacity-50"
+                        onClick={initPlayer}
+                    >
+                        ▶
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
 
-export default VideoPlayer;
+export default Video;
+export { Video };
