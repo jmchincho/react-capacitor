@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def getEnvOrDefault = { key, fallback ->
+    return project.hasProperty(key) ? project.getProperty(key) : fallback
+}
+
 android {
     namespace "es.test.jmchincho"
     compileSdk rootProject.ext.compileSdkVersion
@@ -7,8 +11,8 @@ android {
         applicationId "es.test.jmchincho"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "0.0.1.${System.getenv("CM_COMMIT") ?: "dev"}"
+        versionCode getEnvOrDefault('versionCode', 1).toInteger()
+        versionName getEnvOrDefault('versionName', "1.0")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
