@@ -1,11 +1,11 @@
 workflows:
-  android-workflow:
+  android-workflow-integration:
     environment:
       java: 21
       groups:
         - firebase
         - keystore_credentials
-    name: Android Workflow
+    name: Android Workflow Integration
     scripts:
       - name: Install dependencies
         script: |
@@ -54,6 +54,46 @@ workflows:
           app_id: 1:761973486485:android:98f9b993fb008ebea07c9c
           groups:
             - test
+  android-workflow:
+    environment:
+      java: 21
+      groups:
+        - google_play
+        - keystore_credentials
+    name: Android Workflow
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install --force
+      - name: Build Typescript
+        script: |
+          npm run build
+          npx cap sync android
+      - name: Decode keystore
+        script: |
+          echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
+      - name: Build Android
+        script: |
+          cd android
+          ./gradlew assembleRelease
+      - name: Align APK
+        script: |
+          zipalign -v 4 android/app/build/outputs/apk/release/app-release-unsigned.apk android/app/build/outputs/apk/release/app-release-aligned.apk
+      - name: Sign APK
+        script: |
+          apksigner sign --ks $CM_KEYSTORE_PATH --ks-key-alias $CM_KEY_ALIAS --ks-pass pass:$CM_KEYSTORE_PASSWORD --key-pass pass:$CM_KEY_PASSWORD --out android/app/build/outputs/apk/release/app-release-signed.apk android/app/build/outputs/apk/release/app-release-aligned.apk
+      - name: Verify Signed APK
+        script: |
+          apksigner verify --verbose --print-certs android/app/build/outputs/apk/release/app-release-signed.apk
+          rm -rf android/app/build/outputs/apk/release/app-release-unsigned.apk
+          rm -rf android/app/build/outputs/apk/release/app-release-aligned.apk
+    artifacts:
+      - android/app/build/outputs/**/*.apk
+    publishing:
+      google_play:
+        credentials: $GOOGLE_PLAY_CREDENTIALS
+        track: internal
+        changes_not_sent_for_review: true
 
   ios-workflow-development:
     environment:
