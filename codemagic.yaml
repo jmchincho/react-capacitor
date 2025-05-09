@@ -72,10 +72,17 @@ workflows:
       - name: Decode keystore
         script: |
           echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
+      - name: Calcular versionCode desde Google Play
+        script: |
+            LATEST=$(google-play get-latest-build-number \
+                  --package-name "es.test.jmchincho" || echo 0)
+            export NEXT_CODE=$(($LATEST + 1))
       - name: Build Android
         script: |
           cd android
-          ./gradlew clean bundleRelease
+          ./gradlew clean bundleRelease \
+          -PversionCode=$NEXT_CODE \
+          -PversionName=1.0.$NEXT_CODE
     artifacts:
       - android/app/build/outputs/**/*.aab
     publishing:
