@@ -85,7 +85,6 @@ workflows:
       google_play:
         credentials: $GOOGLE_PLAY_CREDENTIALS
         track: internal
-        changes_not_sent_for_review: true
 
   ios-workflow-development:
     environment:
