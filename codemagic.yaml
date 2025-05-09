@@ -80,6 +80,7 @@ workflows:
       - name: Build Android
         script: |
           cd android
+          echo $NEXT_CODE
           ./gradlew clean bundleRelease \
           -PversionCode=$NEXT_CODE \
           -PversionName=1.0.$NEXT_CODE
