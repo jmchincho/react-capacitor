@@ -6,74 +6,102 @@ const { store, ProductType, Platform, LogLevel } = window.CdvPurchase;
 
 const InAppPurchase = () => {
     const [product, setProduct] = useState(null);
-    const productId = 'virtualcoins100'; // Reemplaza con tu ID de producto real
+    const [logs, setLogs] = useState<string[]>([]);
+    const productId = 'virtualcoins100'; // Reemplaza con tu ID real de Google Play Console
+
+    const log = (msg: string) => {
+        console.log(msg);
+        setLogs(prev => [...prev, msg]);
+    };
 
     useEffect(() => {
+        log('Iniciando configuración de compras...');
+
         const platformName =
             Capacitor.getPlatform() === 'android'
                 ? Platform.GOOGLE_PLAY
                 : Platform.APPLE_APPSTORE;
+
+        log(`Plataforma detectada: ${platformName}`);
 
         store.verbosity = LogLevel.DEBUG;
 
         store.register([
             {
                 id: productId,
-                type: ProductType.CONSUMABLE, // O ProductType.CONSUMABLE según tu caso
+                type: ProductType.CONSUMABLE,
                 platform: platformName,
             },
         ]);
 
+        log(`Producto registrado: ${productId}`);
+
         store.error((err) => {
-            console.warn('Store Error:', err);
+            log(`❌ Error del store: ${err.code} - ${err.message}`);
         });
 
         store.when()
             .productUpdated((p) => {
+                log(`✅ Producto actualizado: ${p.id}`);
                 setProduct(p);
             })
             .approved((transaction) => {
+                log(`✅ Transacción aprobada: ${transaction.id}`);
                 transaction.verify();
             })
             .verified((receipt) => {
+                log(`✅ Recibo verificado: ${receipt.transaction.id}`);
                 receipt.finish();
-                // Aquí puedes desbloquear contenido o funcionalidades
             });
 
-        store.initialize([platformName]).then(() => {
-            store.update().then(() => {
-                store.restorePurchases();
+        store.initialize([platformName])
+            .then(() => {
+                log('✅ Store inicializado correctamente.');
+                return store.update();
+            })
+            .then(() => {
+                log('🔄 Productos actualizados. Intentando restaurar...');
+                return store.restorePurchases();
+            })
+            .catch((e) => {
+                log(`❌ Error durante la inicialización: ${e.message}`);
             });
-        });
     }, []);
 
     const purchaseProduct = () => {
         if (product) {
             const offer = product.getOffer();
             if (offer) {
+                log(`🛒 Iniciando compra para oferta: ${offer.id}`);
                 store.order(offer).then(
-                    () => {
-                        console.log('Compra iniciada');
-                    },
-                    (err) => {
-                        console.error('Error al iniciar la compra:', err);
-                    }
+                    () => log('✅ Compra iniciada con éxito'),
+                    (err) => log(`❌ Error al iniciar compra: ${err.message}`)
                 );
+            } else {
+                log('⚠️ No hay oferta disponible para el producto');
             }
+        } else {
+            log('⚠️ Producto no disponible aún');
         }
     };
 
     return (
         <div>
             <h1>Compra dentro de la aplicación</h1>
-            {product && (
+            {product ? (
                 <div>
-                    <p>{product.title}</p>
+                    <p><strong>{product.title}</strong></p>
                     <p>{product.description}</p>
-                    <p>{product.offers[0].pricingPhases[0].price}</p>
+                    <p>Precio: {product.offers?.[0]?.pricingPhases?.[0]?.price}</p>
                     <button onClick={purchaseProduct}>Comprar</button>
                 </div>
+            ) : (
+                <p>Cargando producto...</p>
             )}
+            <h3>Logs:</h3>
+            <pre style={{ background: '#eee', padding: '1rem', maxHeight: 300, overflowY: 'auto' }}>
+                {logs.join('\n')}
+            </pre>
         </div>
     );
 };
