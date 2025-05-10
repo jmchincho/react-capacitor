@@ -51,7 +51,42 @@ const InAppPurchase = () => {
             })
             .verified((receipt) => {
                 log(`✅ Recibo verificado: ${receipt.transaction.id}`);
-                receipt.finish();
+
+                const purchaseToken = receipt.nativeTransaction?.purchaseToken;
+
+                if (purchaseToken) {
+                    log(`🎟️ Token de compra: ${purchaseToken}`);
+
+                    // Aquí llamas a tu backend para validarlo y/o consumirlo
+                    // fetch('https://tu-backend.com/api/google-play/validate', {
+                    //     method: 'POST',
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //     },
+                    //     body: JSON.stringify({
+                    //         productId: productId,
+                    //         purchaseToken: purchaseToken,
+                    //         platform: 'android',
+                    //     }),
+                    // })
+                    //     .then(res => res.json())
+                    //     .then(data => {
+                    //         log(`📡 Respuesta backend: ${JSON.stringify(data)}`);
+                    //         // Solo llamas a finish si el backend valida
+                    //         if (data.status === 'ok') {
+                    //             receipt.finish();
+                    //         } else {
+                    //             log('⚠️ Backend no confirmó la compra');
+                    //         }
+                    //     })
+                    //     .catch(err => {
+                    //         log(`❌ Error al contactar backend: ${err.message}`);
+                    //     });
+                } else {
+                    log('⚠️ No se obtuvo purchaseToken');
+                    receipt.finish(); // fallback: termina igual para no quedar colgado
+                }
+            });
             });
 
         store.initialize([platformName])
