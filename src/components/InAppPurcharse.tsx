@@ -1,46 +1,79 @@
-// src/components/InAppPurchase.tsx
-import {useInAppPurchase} from '../hook/useInAppPurchase';
+import { useEffect, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
+import 'cordova-plugin-purchase/www/store';
+
+const { store, ProductType, Platform, LogLevel } = window.CdvPurchase;
 
 const InAppPurchase = () => {
-    useInAppPurchase();
+    const [product, setProduct] = useState(null);
+    const productId = 'virtualcoins100'; // Reemplaza con tu ID de producto real
 
-    const handleBuySubscription = () => {
-        const store = (window as any)?.CdvPurchase?.store;
+    useEffect(() => {
+        const platformName =
+            Capacitor.getPlatform() === 'android'
+                ? Platform.GOOGLE_PLAY
+                : Platform.APPLE_APPSTORE;
 
-        if (!store) {
-            console.warn('Store not initialized yet');
-            return;
+        store.verbosity = LogLevel.DEBUG;
+
+        store.register([
+            {
+                id: productId,
+                type: ProductType.CONSUMABLE, // O ProductType.CONSUMABLE según tu caso
+                platform: platformName,
+            },
+        ]);
+
+        store.error((err) => {
+            console.warn('Store Error:', err);
+        });
+
+        store.when()
+            .productUpdated((p) => {
+                setProduct(p);
+            })
+            .approved((transaction) => {
+                transaction.verify();
+            })
+            .verified((receipt) => {
+                receipt.finish();
+                // Aquí puedes desbloquear contenido o funcionalidades
+            });
+
+        store.initialize([platformName]).then(() => {
+            store.update().then(() => {
+                store.restorePurchases();
+            });
+        });
+    }, []);
+
+    const purchaseProduct = () => {
+        if (product) {
+            const offer = product.getOffer();
+            if (offer) {
+                store.order(offer).then(
+                    () => {
+                        console.log('Compra iniciada');
+                    },
+                    (err) => {
+                        console.error('Error al iniciar la compra:', err);
+                    }
+                );
+            }
         }
-
-        const product = store.get('es.test.jmchincho.fitness.premium.1');
-        alert('>>>>>>>>>>>>> ' + product)
-        const offer = product?.getOffer();
-
-        store.order(offer);
-    };
-
-    const handleBuyProduct = () => {
-        const store = (window as any)?.CdvPurchase?.store;
-
-        if (!store) {
-            console.warn('Store not initialized yet');
-            return;
-        }
-
-        const product = store.get('es.test.jmchincho.fitness.product.1');
-        alert('>>>>>>>>>>>>>>> ' + product)
-        const offer = product?.getOffer();
-
-        store.order(offer);
     };
 
     return (
-        <div style={{ padding: '1rem' }}>
-            <h1>Mi App con Suscripciones</h1>
-            <button onClick={handleBuySubscription}>Comprar Suscripción</button>
-
-            <h1>Mi App con producto</h1>
-            <button onClick={handleBuyProduct}>Comprar producto</button>
+        <div>
+            <h1>Compra dentro de la aplicación</h1>
+            {product && (
+                <div>
+                    <p>{product.title}</p>
+                    <p>{product.description}</p>
+                    <p>{product.offers[0].pricingPhases[0].price}</p>
+                    <button onClick={purchaseProduct}>Comprar</button>
+                </div>
+            )}
         </div>
     );
 };
