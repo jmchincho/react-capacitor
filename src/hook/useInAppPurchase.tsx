@@ -15,11 +15,11 @@ export function useInAppPurchase() {
                 const store = window.CdvPurchase?.store;
 
                 if (!store) {
-                    console.warn('CdvPurchase store not available');
+                    alert('CdvPurchase store not available');
                     return;
                 }
 
-                console.log('📦 Iniciando œ...');
+                alert('📦 Iniciando œ...');
                 store.verbosity = store.DEBUG;
 
                 try {
@@ -51,28 +51,28 @@ export function useInAppPurchase() {
                     // ✅ Listeners
                     store.when()
                         .productUpdated(() => {
-                            console.log('✅ Productos cargados:', store.products);
+                            alert('✅ Productos cargados:' + store.products);
                         })
                         .approved((tx: any) => {
-                            console.log('🛒 Compra aprobada:', tx);
+                            alert('🛒 Compra aprobada:'+ tx);
                             tx.verify();
                         })
                         .verified((receipt: any) => {
-                            console.log('✅ Compra verificada:', receipt);
+                            alert('✅ Compra verificada:' + receipt);
                             receipt.finish();
                         });
 
                     store.ready(() => {
-                        console.log('✅ Productos cargados:', store.products);
-                        console.log('✅ Store READY');
+                        alert('✅ Productos cargados:' + store.products);
+                        alert('✅ Store READY');
                     });
 
                     store.error((err: any) => {
-                        console.error('[STORE ERROR]', err);
+                        alert('[STORE ERROR]' + err);
                     });
 
                 } catch (error: any) {
-                    console.error('[STORE INITIALIZATION ERROR]', error?.message || error);
+                    alert('[STORE INITIALIZATION ERROR]' + error?.message || error);
                 }
             }, { once: true });
         };

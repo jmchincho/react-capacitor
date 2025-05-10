@@ -13,7 +13,7 @@ const InAppPurchase = () => {
         }
 
         const product = store.get('es.test.jmchincho.fitness.premium.1');
-        console.log('>>>>>>>>>>>>> ' + product)
+        alert('>>>>>>>>>>>>> ' + product)
         const offer = product?.getOffer();
 
         store.order(offer);
@@ -28,7 +28,7 @@ const InAppPurchase = () => {
         }
 
         const product = store.get('es.test.jmchincho.fitness.product.1');
-        console.log('>>>>>>>>>>>>>>> ' + product)
+        alert('>>>>>>>>>>>>>>> ' + product)
         const offer = product?.getOffer();
 
         store.order(offer);
