@@ -58,10 +58,11 @@ const InAppPurchase = () => {
                     log(`🎟️ Token de compra: ${purchaseToken}`);
 
                     // Aquí llamas a tu backend para validarlo y/o consumirlo
-                    fetch('https://tu-backend.com/api/google-play/validate', {
+                    fetch('https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'ngrok-skip-browser-warning': 'true',
                         },
                         body: JSON.stringify({
                             productId: productId,
