@@ -37,11 +37,6 @@ export function useInAppPurchase() {
                     // ✅ Registrar productos
                     store.register([
                         {
-                            id: 'es.test.jmchincho.fitness.premium',
-                            type: store.PAID_SUBSCRIPTION,
-                            platform: store.GOOGLE_PLAY,
-                        },
-                        {
                             id: 'virtualcoins100',
                             type: store.CONSUMABLE ,
                             platform: store.GOOGLE_PLAY,
