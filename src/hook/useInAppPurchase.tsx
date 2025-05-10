@@ -42,7 +42,7 @@ export function useInAppPurchase() {
                             platform: store.GOOGLE_PLAY,
                         },
                         {
-                            id: 'es.test.jmchincho.fitness.product.1',
+                            id: 'virtualcoins100',
                             type: store.CONSUMABLE ,
                             platform: store.GOOGLE_PLAY,
                         }
