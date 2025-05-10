@@ -46,7 +46,8 @@ const InAppPurchase = () => {
                 setProduct(p);
             })
             .approved((transaction) => {
-                log(`✅ Transacción aprobada: ${transaction.id}`);
+                console.log('🧩 Transacción completa:', transaction);
+                log(`✅ Transacción aprobada (raw): ${JSON.stringify(transaction)}`);
                 transaction.verify();
             })
             .verified((receipt) => {
