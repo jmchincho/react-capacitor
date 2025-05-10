@@ -61,42 +61,33 @@ const InAppPurchase = () => {
 
                 if (purchaseToken) {
                     log(`🎟️ Token de compra: ${purchaseToken}`);
-                    fetch('https://postman-echo.com/post', {
+
+                    // Aquí llamas a tu backend para validarlo y/o consumirlo
+                    fetch('https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'ngrok-skip-browser-warning': 'true',
                         },
-                        body: JSON.stringify({ test: true }),
+                        body: JSON.stringify({
+                            productId: productId,
+                            purchaseToken: purchaseToken,
+                            platform: 'android',
+                        }),
                     })
                         .then(res => res.json())
-                        .then(data => log('✅ Llamada de prueba OK:' + JSON.stringify(data)))
-                        .catch(err => log('❌ Fallo en llamada de prueba:' + err.message));
-                    // Aquí llamas a tu backend para validarlo y/o consumirlo
-                    // fetch('https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate', {
-                    //     method: 'POST',
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //         'ngrok-skip-browser-warning': 'true',
-                    //     },
-                    //     body: JSON.stringify({
-                    //         productId: productId,
-                    //         purchaseToken: purchaseToken,
-                    //         platform: 'android',
-                    //     }),
-                    // })
-                    //     .then(res => res.json())
-                    //     .then(data => {
-                    //         log(`📡 Respuesta backend: ${JSON.stringify(data)}`);
-                    //         // Solo llamas a finish si el backend valida
-                    //         if (data.status === 'ok') {
-                    //             receipt.finish();
-                    //         } else {
-                    //             log('⚠️ Backend no confirmó la compra');
-                    //         }
-                    //     })
-                    //     .catch(err => {
-                    //         log(`❌ Error al contactar backend: ${err.message}`);
-                    //     });
+                        .then(data => {
+                            log(`📡 Respuesta backend: ${JSON.stringify(data)}`);
+                            // Solo llamas a finish si el backend valida
+                            if (data.status === 'ok') {
+                                receipt.finish();
+                            } else {
+                                log('⚠️ Backend no confirmó la compra');
+                            }
+                        })
+                        .catch(err => {
+                            log(`❌ Error al contactar backend: ${err.message}`);
+                        });
                 } else {
                     log('⚠️ No se obtuvo purchaseToken');
                     receipt.finish(); // fallback: termina igual para no quedar colgado
