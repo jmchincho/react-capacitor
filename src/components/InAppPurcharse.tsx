@@ -17,6 +17,8 @@ const InAppPurchase = () => {
     useEffect(() => {
         log('Iniciando configuración de compras...');
 
+        store.validator = null;
+
         const platformName =
             Capacitor.getPlatform() === 'android'
                 ? Platform.GOOGLE_PLAY
