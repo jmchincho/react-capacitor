@@ -17,7 +17,7 @@ const InAppPurchase = () => {
     useEffect(() => {
         log('Iniciando configuración de compras...');
 
-        store.validator = null;
+
 
         const platformName =
             Capacitor.getPlatform() === 'android'
@@ -27,6 +27,8 @@ const InAppPurchase = () => {
         log(`Plataforma detectada: ${platformName}`);
 
         store.verbosity = LogLevel.DEBUG;
+
+        store.validator = undefined;
 
         store.register([
             {
