@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+def hasSigningProps = System.getenv("CM_KEYSTORE_PATH") &&
+        System.getenv("CM_KEYSTORE_PASSWORD") &&
+        System.getenv("CM_KEY_ALIAS") &&
+        System.getenv("CM_KEY_PASSWORD")
+
 def getEnvOrDefault = { key, fallback ->
     return project.hasProperty(key) ? project.getProperty(key) : fallback
 }
@@ -21,18 +26,22 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            storeFile file(System.getenv("CM_KEYSTORE_PATH"))
-            storePassword System.getenv("CM_KEYSTORE_PASSWORD")
-            keyAlias System.getenv("CM_KEY_ALIAS")
-            keyPassword System.getenv("CM_KEY_PASSWORD")
+    if (hasSigningProps) {
+        signingConfigs {
+            release {
+                storeFile file(System.getenv("CM_KEYSTORE_PATH"))
+                storePassword System.getenv("CM_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("CM_KEY_ALIAS")
+                keyPassword System.getenv("CM_KEY_PASSWORD")
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (hasSigningProps) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

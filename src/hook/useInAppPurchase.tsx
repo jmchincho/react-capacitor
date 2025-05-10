@@ -19,7 +19,7 @@ export function useInAppPurchase() {
                     return;
                 }
 
-                console.log('📦 Iniciando CdvPurchase...');
+                console.log('📦 Iniciando œ...');
                 store.verbosity = store.DEBUG;
 
                 try {
@@ -29,7 +29,7 @@ export function useInAppPurchase() {
                     // ✅ Inicializar tienda
                     await store.initialize([
                         {
-                            platform: store.APPLE_APPSTORE,
+                            platform: store.GOOGLE_PLAY,
                             options: { needAppReceipt: true }
                         }
                     ]);
@@ -37,9 +37,14 @@ export function useInAppPurchase() {
                     // ✅ Registrar productos
                     store.register([
                         {
-                            id: 'es.test.jmchincho.fitness.premium.1',
+                            id: 'es.test.jmchincho.fitness.premium',
                             type: store.PAID_SUBSCRIPTION,
-                            platform: store.APPLE_APPSTORE,
+                            platform: store.GOOGLE_PLAY,
+                        },
+                        {
+                            id: 'es.test.jmchincho.fitness.product.1',
+                            type: store.CONSUMABLE ,
+                            platform: store.GOOGLE_PLAY,
                         }
                     ]);
 
