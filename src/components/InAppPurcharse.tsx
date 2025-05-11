@@ -8,7 +8,7 @@ const InAppPurchase = () => {
     const [product, setProduct] = useState(null);
     const [logs, setLogs] = useState<string[]>([]);
     const productId = 'virtualcoins100'; // Reemplaza con tu ID real de Google Play Console
-
+    const subcriptionId = 'premium'
     const log = (msg: string) => {
         console.log(msg);
         setLogs(prev => [...prev, msg]);
@@ -16,8 +16,6 @@ const InAppPurchase = () => {
 
     useEffect(() => {
         log('Iniciando configuración de compras...');
-
-
 
         const platformName =
             Capacitor.getPlatform() === 'android'
@@ -36,9 +34,15 @@ const InAppPurchase = () => {
                 type: ProductType.CONSUMABLE,
                 platform: platformName,
             },
+            {
+                id: subcriptionId,
+                type: ProductType.PAID_SUBSCRIPTION,
+                platform: platformName,
+            },
         ]);
 
         log(`Producto registrado: ${productId}`);
+        log(`Subcripcion registrado: ${productId}`);
 
         store.error((err) => {
             log(`❌ Error del store: ${err.code} - ${err.message}`);
