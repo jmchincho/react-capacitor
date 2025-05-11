@@ -5,10 +5,13 @@ import 'cordova-plugin-purchase/www/store';
 const { store, ProductType, Platform, LogLevel } = window.CdvPurchase;
 
 const InAppPurchase = () => {
-    const [product, setProduct] = useState(null);
+    const [products, setProducts] = useState<Record<string, typeof store.Product>>({});
+    const [activeSubscriptions, setActiveSubscriptions] = useState<string[]>([]);
     const [logs, setLogs] = useState<string[]>([]);
-    const productId = 'virtualcoins100'; // Reemplaza con tu ID real de Google Play Console
-    const subcriptionId = 'premium'
+
+    const productId = 'virtualcoins100';
+    const subscriptionId = 'premium';
+
     const log = (msg: string) => {
         console.log(msg);
         setLogs(prev => [...prev, msg]);
@@ -17,124 +20,60 @@ const InAppPurchase = () => {
     useEffect(() => {
         log('Iniciando configuración de compras...');
 
-        const platformName =
-            Capacitor.getPlatform() === 'android'
-                ? Platform.GOOGLE_PLAY
-                : Platform.APPLE_APPSTORE;
+        const platformName = Capacitor.getPlatform() === 'android'
+            ? Platform.GOOGLE_PLAY
+            : Platform.APPLE_APPSTORE;
 
         log(`Plataforma detectada: ${platformName}`);
 
         store.verbosity = LogLevel.DEBUG;
-
         store.validator = 'https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate';
 
         store.register([
-            {
-                id: productId,
-                type: ProductType.CONSUMABLE,
-                platform: platformName,
-            },
-            {
-                id: subcriptionId,
-                type: ProductType.PAID_SUBSCRIPTION,
-                platform: platformName,
-            },
+            { id: productId, type: ProductType.CONSUMABLE, platform: platformName },
+            { id: subscriptionId, type: ProductType.PAID_SUBSCRIPTION, platform: platformName },
         ]);
 
-        log(`Producto registrado: ${productId}`);
-        log(`Subcripcion registrado: ${productId}`);
-
-        store.error((err) => {
+        store.error(err => {
             log(`❌ Error del store: ${err.code} - ${err.message}`);
         });
 
-        store.when()
-            .productUpdated((p) => {
-                log(`✅ Producto actualizado: ${p.id}`);
-                setProduct(p);
-            })
-            .approved((transaction) => {
-                console.log('🧩 Transacción completa:', transaction);
-                log(`✅ Transacción aprobada (raw): ${JSON.stringify(transaction)}`);
-                transaction.verify().then(() => {
-                    log('🔐 Verificación solicitada correctamente.');
-                    const purchaseToken = transaction.purchaseId;
+        store.when().productUpdated((p) => {
+            log(`✅ Producto actualizado: ${p.id}`);
+            setProducts(prev => ({ ...prev, [p.id]: p }));
+        });
 
-                    log('🔐 Verificación solicitada correctamente. 2 -> ' + purchaseToken );
-
-                    if (purchaseToken) {
-                        log(`🎟️ Token de compra: ${purchaseToken}`);
-
-                        // Aquí llamas a tu backend para validarlo y/o consumirlo
-                        fetch('https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'ngrok-skip-browser-warning': 'true',
-                            },
-                            body: JSON.stringify({
-                                productId: productId,
-                                purchaseToken: purchaseToken,
-                                platform: 'android',
-                            }),
-                        })
-                            .then(res => res.json())
-                            .then(data => {
-                                log(`📡 Respuesta backend: ${JSON.stringify(data)}`);
-                                // Solo llamas a finish si el backend valida
-                                if (data.status === 'ok') {
-                                    transaction.finish();
-                                } else {
-                                    log('⚠️ Backend no confirmó la compra');
-                                }
-                            })
-                            .catch(err => {
-                                log(`❌ Error al contactar backend: ${err.message}`);
-                            });
-                    }
-                }).catch((err) => {
-                    log(`❌ Error al verificar: ${err.message || err}`);
-                });
-            })
-            .verified((receipt) => {
-                log(`✅ Recibo verificado: ${receipt.transaction.id}`);
-
-                const purchaseToken = receipt.nativeTransaction?.purchaseToken;
-
-                if (purchaseToken) {
-                    log(`🎟️ Token de compra: ${purchaseToken}`);
-
-                    // Aquí llamas a tu backend para validarlo y/o consumirlo
-                    // fetch('https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate', {
-                    //     method: 'POST',
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //         'ngrok-skip-browser-warning': 'true',
-                    //     },
-                    //     body: JSON.stringify({
-                    //         productId: productId,
-                    //         purchaseToken: purchaseToken,
-                    //         platform: 'android',
-                    //     }),
-                    // })
-                    //     .then(res => res.json())
-                    //     .then(data => {
-                    //         log(`📡 Respuesta backend: ${JSON.stringify(data)}`);
-                    //         // Solo llamas a finish si el backend valida
-                    //         if (data.status === 'ok') {
-                    //             receipt.finish();
-                    //         } else {
-                    //             log('⚠️ Backend no confirmó la compra');
-                    //         }
-                    //     })
-                    //     .catch(err => {
-                    //         log(`❌ Error al contactar backend: ${err.message}`);
-                    //     });
-                } else {
-                    log('⚠️ No se obtuvo purchaseToken');
-                    receipt.finish(); // fallback: termina igual para no quedar colgado
-                }
+        store.when().approved((transaction) => {
+            log(`✅ Transacción aprobada: ${transaction.transactionId}`);
+            transaction.verify().then(() => {
+                log(`🔐 Verificación solicitada correctamente. Token: ${transaction.purchaseId}`);
+                fetch('https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true',
+                    },
+                    body: JSON.stringify({
+                        productId: transaction.products?.[0]?.id,
+                        purchaseToken: transaction.purchaseId,
+                        platform: 'android',
+                    }),
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        log(`📡 Respuesta backend: ${JSON.stringify(data)}`);
+                        if (data.status === 'ok') {
+                            transaction.finish();
+                            log('✅ Compra finalizada');
+                        }
+                    })
+                    .catch(err => log(`❌ Error backend: ${err.message}`));
             });
+        });
+
+        store.when().verified((receipt) => {
+            log(`✅ Recibo verificado: ${receipt.transaction.id}`);
+        });
 
         store.initialize([platformName])
             .then(() => {
@@ -142,44 +81,62 @@ const InAppPurchase = () => {
                 return store.update();
             })
             .then(() => {
-                log('🔄 Productos actualizados. Intentando restaurar...');
+                log('🔄 Productos actualizados. Restaurando compras...');
                 return store.restorePurchases();
             })
-            .catch((e) => {
-                log(`❌ Error durante la inicialización: ${e.message}`);
+            .then(() => {
+                // Buscar suscripciones activas
+                const activeSubs = store.products
+                    .filter(p => p.type === ProductType.PAID_SUBSCRIPTION && p.owned)
+                    .map(p => p.id);
+                log(`📌 Suscripciones activas: ${activeSubs.join(', ') || 'ninguna'}`);
+                setActiveSubscriptions(activeSubs);
+            })
+            .catch(e => {
+                log(`❌ Error inicialización: ${e.message}`);
             });
     }, []);
 
-    const purchaseProduct = () => {
-        if (product) {
-            const offer = product.getOffer();
-            if (offer) {
-                log(`🛒 Iniciando compra para oferta: ${offer.id}`);
-                store.order(offer).then(
-                    () => log('✅ Compra iniciada con éxito'),
-                    (err) => log(`❌ Error al iniciar compra: ${err.message}`)
-                );
-            } else {
-                log('⚠️ No hay oferta disponible para el producto');
-            }
+    const purchaseProduct = (productId: string) => {
+        const product = products[productId];
+        if (!product) return log('⚠️ Producto no encontrado');
+
+        const offer = product.getOffer();
+        if (offer) {
+            log(`🛒 Iniciando compra para: ${productId}`);
+            store.order(offer).then(
+                () => log('✅ Compra iniciada con éxito'),
+                err => log(`❌ Error en compra: ${err.message}`)
+            );
         } else {
-            log('⚠️ Producto no disponible aún');
+            log('⚠️ No hay oferta disponible');
         }
     };
 
     return (
         <div>
-            <h1>Compra dentro de la aplicación</h1>
-            {product ? (
-                <div>
-                    <p><strong>{product.title}</strong></p>
-                    <p>{product.description}</p>
-                    <p>Precio: {product.offers?.[0]?.pricingPhases?.[0]?.price}</p>
-                    <button onClick={purchaseProduct}>Comprar</button>
+            <h1>Compras dentro de la aplicación</h1>
+
+            {Object.values(products).map(p => (
+                <div key={p.id}>
+                    <p><strong>{p.title}</strong></p>
+                    <p>{p.description}</p>
+                    <p>Precio: {p.offers?.[0]?.pricingPhases?.[0]?.price}</p>
+                    <button onClick={() => purchaseProduct(p.id)}>Comprar {p.id}</button>
                 </div>
-            ) : (
-                <p>Cargando producto...</p>
+            ))}
+
+            {activeSubscriptions.length > 0 && (
+                <>
+                    <h3>Suscripciones activas:</h3>
+                    <ul>
+                        {activeSubscriptions.map(sub => (
+                            <li key={sub}>🟢 {sub}</li>
+                        ))}
+                    </ul>
+                </>
             )}
+
             <h3>Logs:</h3>
             <pre style={{ background: '#eee', padding: '1rem', maxHeight: 300, overflowY: 'auto' }}>
                 {logs.join('\n')}
