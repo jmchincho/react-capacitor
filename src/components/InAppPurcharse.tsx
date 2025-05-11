@@ -86,6 +86,17 @@ const InAppPurchase = () => {
             })
             .then(() => {
                 // Buscar suscripciones activas
+
+                log('🔄 Buscar suscripciones activas...');
+
+                store.products.forEach(p => {
+                    log(`🛒 Producto: ${p.id}`);
+                    log(`   Tipo: ${p.type}`);
+                    log(`   Estado: ${p.state}`);
+                    log(`   ¿Comprado?: ${p.owned ? '✅ Sí' : '❌ No'}`);
+                    log(`   Título: ${p.title}`);
+                    log(`   Precio: ${p.price}`);
+                });
                 const activeSubs = store.products
                     .filter(p => p.type === ProductType.PAID_SUBSCRIPTION && p.owned)
                     .map(p => p.id);
