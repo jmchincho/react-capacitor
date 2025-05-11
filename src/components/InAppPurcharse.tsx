@@ -54,7 +54,9 @@ const InAppPurchase = () => {
                 log(`✅ Transacción aprobada (raw): ${JSON.stringify(transaction)}`);
                 transaction.verify().then(() => {
                     log('🔐 Verificación solicitada correctamente.');
-                    const purchaseToken = transaction.nativeTransaction?.purchaseToken;
+                    const purchaseToken = transaction.purchaseId;
+
+                    log('🔐 Verificación solicitada correctamente. 2 -> ' + purchaseToken );
 
                     if (purchaseToken) {
                         log(`🎟️ Token de compra: ${purchaseToken}`);
