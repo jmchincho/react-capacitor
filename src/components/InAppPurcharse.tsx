@@ -97,19 +97,14 @@ const InAppPurchase = () => {
 
                 log('🔄 Buscar suscripciones activas...');
 
-                products.verifiedPurchases.forEach(p => {
-                    log(`🛒 Producto: ${p.id}`);
-                    log(`   Tipo: ${p.type}`);
-                    log(`   Estado: ${p.state}`);
-                    log(`   ¿Comprado?: ${p.owned ? '✅ Sí' : '❌ No'}`);
-                    log(`   Título: ${p.title}`);
-                    log(`   Precio: ${p.price}`);
+                const activeSubscription = store.verifiedPurchases.find(purchase => {
+                    const product = store.get(purchase.id, purchase.platform);
+                    return product?.type === CdvPurchase.ProductType.PAID_SUBSCRIPTION && product.owned;
                 });
-                const activeSubs =  products.verifiedPurchases
-                    .filter(p => p.type === ProductType.PAID_SUBSCRIPTION && p.owned)
-                    .map(p => p.id);
-                log(`📌 Suscripciones activas: ${activeSubs.join(', ') || 'ninguna'}`);
-                setActiveSubscriptions(activeSubs);
+                // @ts-ignore
+                log(`📌 Suscripciones activas: ${activeSubscription.join(', ') || 'ninguna'}`);
+                // @ts-ignore
+                setActiveSubscriptions(activeSubscription);
             })
             .catch(e => {
                 log(`❌ Error inicialización: ${e.message}`);
