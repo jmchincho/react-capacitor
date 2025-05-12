@@ -36,6 +36,11 @@ const InAppPurchase = () => {
             { id: subscriptionId2, type: ProductType.PAID_SUBSCRIPTION, platform: platformName },
         ]);
 
+        store.ready(() => {
+            console.log('Store is ready');
+            store.refresh(); // <-- Esto es obligatorio para recuperar compras previas
+        });
+
         store.error(err => {
             log(`❌ Error del store: ${err.code} - ${err.message}`);
         });
