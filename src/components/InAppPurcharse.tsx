@@ -85,6 +85,7 @@ const InAppPurchase = () => {
         store.initialize([platformName])
             .then(() => {
                 log('✅ Store inicializado correctamente.');
+                store.refresh(); // <-- Esto es obligatorio para recuperar compras previas
                 return store.update();
             })
             .then(() => {
@@ -96,7 +97,7 @@ const InAppPurchase = () => {
 
                 log('🔄 Buscar suscripciones activas...');
 
-                store.products.forEach(p => {
+                products.verifiedPurchases.forEach(p => {
                     log(`🛒 Producto: ${p.id}`);
                     log(`   Tipo: ${p.type}`);
                     log(`   Estado: ${p.state}`);
@@ -104,7 +105,7 @@ const InAppPurchase = () => {
                     log(`   Título: ${p.title}`);
                     log(`   Precio: ${p.price}`);
                 });
-                const activeSubs = store.products
+                const activeSubs =  products.verifiedPurchases
                     .filter(p => p.type === ProductType.PAID_SUBSCRIPTION && p.owned)
                     .map(p => p.id);
                 log(`📌 Suscripciones activas: ${activeSubs.join(', ') || 'ninguna'}`);
