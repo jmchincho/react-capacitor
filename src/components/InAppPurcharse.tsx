@@ -11,6 +11,7 @@ const InAppPurchase = () => {
 
     const productId = 'virtualcoins100';
     const subscriptionId = 'premium';
+    const subscriptionId2 = 'premium2';
 
     const log = (msg: string) => {
         console.log(msg);
@@ -32,6 +33,7 @@ const InAppPurchase = () => {
         store.register([
             { id: productId, type: ProductType.CONSUMABLE, platform: platformName },
             { id: subscriptionId, type: ProductType.PAID_SUBSCRIPTION, platform: platformName },
+            { id: subscriptionId2, type: ProductType.PAID_SUBSCRIPTION, platform: platformName },
         ]);
 
         store.error(err => {
