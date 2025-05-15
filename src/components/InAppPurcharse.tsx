@@ -28,7 +28,7 @@ const InAppPurchase = () => {
         log(`Plataforma detectada: ${platformName}`);
 
         store.verbosity = LogLevel.DEBUG;
-        store.validator = 'https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate';
+        store.validator = 'https://4968-92-176-223-111.ngrok-free.app/api/google-play/validate';
 
         store.register([
             { id: productId, type: ProductType.CONSUMABLE, platform: platformName },
@@ -54,7 +54,7 @@ const InAppPurchase = () => {
             log(`✅ Transacción aprobada: ${transaction.transactionId}`);
             transaction.verify().then(() => {
                 log(`🔐 Verificación solicitada correctamente. Token: ${transaction.purchaseId}`);
-                fetch('https://ea35-92-176-223-111.ngrok-free.app/api/google-play/validate', {
+                fetch('https://4968-92-176-223-111.ngrok-free.app/api/google-play/validate', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
